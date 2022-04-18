@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "kubernetes-label-updater.name" . }}
+spec:
+  schedule: {{ .Values.app_value.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ include "kubernetes-label-updater.name" . }}
+            {{ if .Values.app_value.imageTag }}
+            image: "{{ .Values.app_value.imageRepo }}/{{ .Values.app_value.imageName }}:{{ .Values.app_value.imageTag }}"
+            {{ else }}
+            image: "{{ .Values.app_value.imageRepo }}/{{ .Values.app_value.imageName }}"
+            {{ end }}
+            args:
+              - {{ .Release.Namespace | quote }}
+          restartPolicy: {{ .Values.app_value.restartPolicy }}

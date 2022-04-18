@@ -1,0 +1,6 @@
+app_value:
+  schedule: "*/1 * * * *"
+  restartPolicy: "Never"
+  imageRepo: "linpin7994"
+  imageName: "kubernetes-ns-labels-updater"
+  imageTag: ""
